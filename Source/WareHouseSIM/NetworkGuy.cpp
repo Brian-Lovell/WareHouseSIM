@@ -34,13 +34,12 @@ void ANetworkGuy::BeginPlay()
 
 void ANetworkGuy::Move(const FInputActionValue& Value)
 {
-	const float DirectionValue = Value.Get<float>();
-
-	if (Controller && (DirectionValue != 0.f))
-	{
-		FVector Forward = GetActorForwardVector();
-		AddMovementInput(Forward, DirectionValue);
-	}
+	const FVector2D MoveVector = Value.Get<FVector2d>();
+	
+	const FVector Forward = GetActorForwardVector();
+	AddMovementInput(Forward, MoveVector.Y);
+	const FVector Right = GetActorRightVector();
+	AddMovementInput(Right, MoveVector.X);
 }
 
 void ANetworkGuy::Look(const FInputActionValue& Value)
