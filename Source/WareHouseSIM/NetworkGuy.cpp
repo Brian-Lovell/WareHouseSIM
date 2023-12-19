@@ -34,7 +34,23 @@ void ANetworkGuy::BeginPlay()
 
 void ANetworkGuy::Move(const FInputActionValue& Value)
 {
-	UE_LOG(LogTemp, Display, TEXT("IA_Move triggered"));
+	const float DirectionValue = Value.Get<float>();
+
+	if (Controller && (DirectionValue != 0.f))
+	{
+		FVector Forward = GetActorForwardVector();
+		AddMovementInput(Forward, DirectionValue);
+	}
+}
+
+void ANetworkGuy::Look(const FInputActionValue& Value)
+{
+	const FVector2D LookAxisValue = Value.Get<FVector2d>();
+	if (GetController())
+	{
+		AddControllerYawInput(LookAxisValue.X);
+		AddControllerPitchInput(LookAxisValue.Y);
+	}
 }
 
 // Called every frame
@@ -50,5 +66,6 @@ void ANetworkGuy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 			EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ANetworkGuy::Move);
+			EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ANetworkGuy::Look);
 	}
 }
