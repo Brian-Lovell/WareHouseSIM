@@ -42,7 +42,8 @@ protected:
 
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
-	void CrouchMovement();
+	void CrouchDown();
+	void StandUp();
 
 public:	
 	// Called every frame

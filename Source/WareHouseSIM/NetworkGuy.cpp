@@ -54,19 +54,14 @@ void ANetworkGuy::Look(const FInputActionValue& Value)
 	}
 }
 
-void ANetworkGuy::CrouchMovement()
+void ANetworkGuy::CrouchDown()
 {
-	if(bIsCrouched)
-	{
-		UnCrouch();
-	}
-	else
-	{
-		{
-			Crouch();
-		}
-	}
-	
+	Crouch();
+}
+
+void ANetworkGuy::StandUp()
+{
+	UnCrouch();
 }
 
 // Called every frame
@@ -84,6 +79,7 @@ void ANetworkGuy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 			EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ANetworkGuy::Move);
 			EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ANetworkGuy::Look);
 			EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ANetworkGuy::Jump);
-			EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this, &ANetworkGuy::CrouchMovement);
+			EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this, &ANetworkGuy::CrouchDown);
+			EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Completed, this, &ANetworkGuy::StandUp);
 	}
 }
