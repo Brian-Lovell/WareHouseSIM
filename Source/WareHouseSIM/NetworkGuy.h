@@ -3,12 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "InputActionValue.h"
 #include "GameFramework/Character.h"
 #include "NetworkGuy.generated.h"
 
 class UInputMappingContext;
 class UInputAction;
 struct  FInputActionValue;
+
 
 UCLASS()
 class WAREHOUSESIM_API ANetworkGuy : public ACharacter
@@ -32,8 +34,15 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* LookAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* JumpAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* CrouchAction;
+
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
+	void CrouchMovement();
 
 public:	
 	// Called every frame

@@ -6,6 +6,8 @@
 #include "Components/InputComponent.h"
 #include "EnhancedInputComponent.h"
 #include "InputActionValue.h"
+#include "GameFramework/Character.h"
+
 
 // Sets default values
 ANetworkGuy::ANetworkGuy()
@@ -52,6 +54,21 @@ void ANetworkGuy::Look(const FInputActionValue& Value)
 	}
 }
 
+void ANetworkGuy::CrouchMovement()
+{
+	if(bIsCrouched)
+	{
+		UnCrouch();
+	}
+	else
+	{
+		{
+			Crouch();
+		}
+	}
+	
+}
+
 // Called every frame
 void ANetworkGuy::Tick(float DeltaTime)
 {
@@ -66,5 +83,7 @@ void ANetworkGuy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	{
 			EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ANetworkGuy::Move);
 			EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ANetworkGuy::Look);
+			EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ANetworkGuy::Jump);
+			EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this, &ANetworkGuy::CrouchMovement);
 	}
 }
