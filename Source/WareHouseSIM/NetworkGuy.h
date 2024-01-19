@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "InputAction.h"
 #include "InputActionValue.h"
 #include "GameFramework/Character.h"
 #include "NetworkGuy.generated.h"
@@ -39,11 +40,21 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* CrouchAction;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* SprintAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	float SprintModifier = 2.f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	float DefaultSpeed = 600.f;
 
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void CrouchDown();
 	void StandUp();
+	void Sprint(const FInputActionInstance& Instance);
 
 public:	
 	// Called every frame

@@ -7,6 +7,8 @@
 #include "EnhancedInputComponent.h"
 #include "InputActionValue.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/PawnMovementComponent.h"
 
 
 // Sets default values
@@ -31,6 +33,7 @@ void ANetworkGuy::BeginPlay()
 			Subsystem->AddMappingContext(NetworkGuyMappingContext, 0);
 		}
 	}
+	
 	
 }
 
@@ -64,6 +67,20 @@ void ANetworkGuy::StandUp()
 	UnCrouch();
 }
 
+void ANetworkGuy::Sprint(const FInputActionInstance& Instance)
+{
+	UE_LOG(LogTemp, Display, TEXT("I'm sprinting!"));
+	bool bSprinting = Instance.GetValue().Get<bool>();
+	if (bSprinting)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = DefaultSpeed * SprintModifier;
+	}
+	else
+	{
+		GetCharacterMovement()->MaxWalkSpeed = DefaultSpeed;
+	}
+}
+
 // Called every frame
 void ANetworkGuy::Tick(float DeltaTime)
 {
@@ -81,5 +98,7 @@ void ANetworkGuy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 			EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ANetworkGuy::Jump);
 			EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this, &ANetworkGuy::CrouchDown);
 			EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Completed, this, &ANetworkGuy::StandUp);
+			EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Triggered, this, &ANetworkGuy::Sprint);
+			EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &ANetworkGuy::Sprint);
 	}
 }
