@@ -19,6 +19,25 @@ ANetworkGuy::ANetworkGuy()
 
 }
 
+void ANetworkGuy::StartClimbing()
+{
+	SetIsClimbing(true);
+	UCharacterMovementComponent* Movement = GetCharacterMovement();
+	Movement->SetMovementMode(MOVE_Flying);
+}
+
+void ANetworkGuy::StopClimbing()
+{
+	SetIsClimbing(false);
+	UCharacterMovementComponent* Movement = GetCharacterMovement();
+	Movement->SetMovementMode(MOVE_Walking);
+}
+
+void ANetworkGuy::SetIsClimbing(bool NewIsClimbing)
+{
+	bIsClimbing = NewIsClimbing;
+}
+
 // Called when the game starts or when spawned
 void ANetworkGuy::BeginPlay()
 {
@@ -40,11 +59,19 @@ void ANetworkGuy::BeginPlay()
 void ANetworkGuy::Move(const FInputActionValue& Value)
 {
 	const FVector2D MoveVector = Value.Get<FVector2d>();
-	
 	const FVector Forward = GetActorForwardVector();
-	AddMovementInput(Forward, MoveVector.Y);
 	const FVector Right = GetActorRightVector();
-	AddMovementInput(Right, MoveVector.X);
+	const FVector UP = GetActorUpVector();
+	
+	if(bIsClimbing)
+	{
+		AddMovementInput(UP,MoveVector.Y);
+	}
+	else
+	{
+	AddMovementInput(Forward, MoveVector.Y);
+	AddMovementInput(Right, MoveVector.X);	
+	}
 }
 
 void ANetworkGuy::Look(const FInputActionValue& Value)

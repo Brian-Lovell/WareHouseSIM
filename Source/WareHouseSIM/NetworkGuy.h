@@ -22,6 +22,13 @@ public:
 	// Sets default values for this character's properties
 	ANetworkGuy();
 
+	void StartClimbing();
+
+	void StopClimbing();
+
+	void SetIsClimbing(bool bIsClimbing);
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -62,5 +69,8 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+private:
+	bool bIsClimbing = false;
+	
 
 };
