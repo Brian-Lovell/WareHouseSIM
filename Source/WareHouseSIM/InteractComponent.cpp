@@ -51,9 +51,17 @@ void UInteractComponent::Interact()
 		// DrawDebugSphere(GetWorld(), HitResult.Location, 10, 100, FColor::Green, false, 5);
 		// DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10, 100, FColor::Green, false, 5);
 		UPrimitiveComponent* HitComponent = HitResult.GetComponent();
+		AActor* HitActor = HitResult.GetActor();
+		FName CanMoveTag = "CanMove";
+		
+		if (HitActor->ActorHasTag(CanMoveTag) == false)
+		{
+			return;
+		}
+		
 		HitComponent->SetSimulatePhysics(true);
 		HitComponent->WakeAllRigidBodies();
-		AActor* HitActor = HitResult.GetActor();
+		
 		HitActor->Tags.Add("Grabbed");
 		HitActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 		PhysicsHandle->GrabComponentAtLocationWithRotation(
