@@ -8,7 +8,8 @@
 #include "InputActionValue.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "GameFramework/PawnMovementComponent.h"
+#include "Engine/World.h"
+#include "PhysicsEngine/PhysicsHandleComponent.h"
 
 
 // Sets default values
@@ -114,6 +115,11 @@ void ANetworkGuy::CustomJump()
 	Jump();
 }
 
+void ANetworkGuy::Interact()
+{
+	UE_LOG(LogTemp, Display, TEXT("Interact Pushed!"))
+}
+
 // Called every frame
 void ANetworkGuy::Tick(float DeltaTime)
 {
@@ -126,12 +132,13 @@ void ANetworkGuy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 {
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
 	{
-			EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ANetworkGuy::Move);
-			EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ANetworkGuy::Look);
-			EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ANetworkGuy::CustomJump);
-			EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this, &ANetworkGuy::CrouchDown);
-			EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Completed, this, &ANetworkGuy::StandUp);
-			EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Triggered, this, &ANetworkGuy::Sprint);
-			EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &ANetworkGuy::Sprint);
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ANetworkGuy::Move);
+		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ANetworkGuy::Look);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ANetworkGuy::CustomJump);
+		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this, &ANetworkGuy::CrouchDown);
+		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Completed, this, &ANetworkGuy::StandUp);
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Triggered, this, &ANetworkGuy::Sprint);
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &ANetworkGuy::Sprint);
+		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &ANetworkGuy::Interact);
 	}
 }

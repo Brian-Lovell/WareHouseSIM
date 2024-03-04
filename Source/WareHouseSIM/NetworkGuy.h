@@ -8,9 +8,10 @@
 #include "GameFramework/Character.h"
 #include "NetworkGuy.generated.h"
 
+class UPhysicsHandleComponent;
 class UInputMappingContext;
 class UInputAction;
-struct  FInputActionValue;
+struct FInputActionValue;
 
 
 UCLASS()
@@ -23,11 +24,8 @@ public:
 	ANetworkGuy();
 
 	void StartClimbing();
-
 	void StopClimbing();
-
 	void SetIsClimbing(bool bIsClimbing);
-
 
 protected:
 	// Called when the game starts or when spawned
@@ -57,12 +55,16 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	float DefaultSpeed = 600.f;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	UInputAction* InteractAction;
+	
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void CrouchDown();
 	void StandUp();
 	void Sprint(const FInputActionInstance& Instance);
 	void CustomJump();
+	void Interact();
 
 public:	
 	// Called every frame
@@ -70,8 +72,7 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	
 private:
 	bool bIsClimbing = false;
-	
-
 };
