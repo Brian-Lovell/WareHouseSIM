@@ -62,6 +62,7 @@ protected:
 	void CrouchDown();
 	void StandUp();
 	void Sprint(const FInputActionInstance& Instance);
+	void CustomJump();
 
 public:	
 	// Called every frame
