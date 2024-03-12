@@ -3,6 +3,8 @@
 
 #include "InteractComponent.h"
 
+#include "HingedDoorComponent.h"
+
 // Sets default values for this component's properties
 UInteractComponent::UInteractComponent()
 {
@@ -75,16 +77,16 @@ void UInteractComponent::Interact()
 		if (HitActor->ActorHasTag(DoorTag) == true)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("DoorTag detected"));
-			UMoverComponent* MoverComp = HitActor->FindComponentByClass<UMoverComponent>();
-			bool bDoorStatus = MoverComp->bIsDoorOpen;
+			UHingedDoorComponent* DoorComp = HitActor->FindComponentByClass<UHingedDoorComponent>();
+			bool bDoorStatus = DoorComp->bIsDoorOpen;
 			if (bDoorStatus == false)
 			{
-				MoverComp->OpenDoor();
+				DoorComp->OpenDoor();
 				UE_LOG(LogTemp, Warning, TEXT("Door Interaction OpenDoor"));
 			}
 			else
 			{
-				MoverComp->CloseDoor();
+				DoorComp->CloseDoor();
 				UE_LOG(LogTemp, Warning, TEXT("Door Interaction CloseDoor"));
 			}
 		}
