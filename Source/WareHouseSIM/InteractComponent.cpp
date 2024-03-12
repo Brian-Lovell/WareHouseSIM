@@ -59,7 +59,6 @@ void UInteractComponent::Interact()
 		
 		if (HitActor->ActorHasTag(LiftTag) == true)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Lift Interaction Case fired"));
 			HitComponent->SetSimulatePhysics(true);
 			HitComponent->WakeAllRigidBodies();
 		
@@ -76,18 +75,15 @@ void UInteractComponent::Interact()
 
 		if (HitActor->ActorHasTag(DoorTag) == true)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("DoorTag detected"));
 			UHingedDoorComponent* DoorComp = HitActor->FindComponentByClass<UHingedDoorComponent>();
 			bool bDoorStatus = DoorComp->bIsDoorOpen;
 			if (bDoorStatus == false)
 			{
 				DoorComp->OpenDoor();
-				UE_LOG(LogTemp, Warning, TEXT("Door Interaction OpenDoor"));
 			}
 			else
 			{
 				DoorComp->CloseDoor();
-				UE_LOG(LogTemp, Warning, TEXT("Door Interaction CloseDoor"));
 			}
 		}
 	}
