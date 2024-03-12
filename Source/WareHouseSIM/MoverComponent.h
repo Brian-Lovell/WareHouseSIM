@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Components/TimelineComponent.h"
 #include "MoverComponent.generated.h"
 
 
@@ -18,25 +19,33 @@ public:
 
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-	// Set if actor should move
-	void SetShouldMove(bool bMoveStatus);
 	
 	// Swinging Doors
 	void OpenDoor();
 	void CloseDoor();
-
 	void SetIsDoorOpen(bool bDoorStatus);
-	
-	UPROPERTY(EditAnywhere, Category="Movement")
-	bool bShouldMove = false;
+
+	// Variable for Door Curve Asset
+	UPROPERTY(EditAnywhere, Category="Door")
+	UCurveFloat* DoorTimelineFloatCurve;
 
 	UPROPERTY(EditAnywhere, Category="Door")
 	bool bIsDoorOpen = false;
 
+	// Set if actor should move
+	void SetShouldMove(bool bMoveStatus);
+	
+	UPROPERTY(EditAnywhere, Category="Movement")
+	bool bShouldMove = false;
+
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
+
+	//TimelineComponent to animate Door meshes
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UTimelineComponent* DoorTimelineComp;
 	
 private:
 	UPROPERTY(EditAnywhere, Category="Movement")
@@ -47,14 +56,18 @@ private:
 
 	UPROPERTY(EditAnywhere, Category="Rotation")
 	FRotator RotationAngle;
-
-	UPROPERTY(EditAnywhere, Category="Rotation")
+	
 	float RotationAmount = 0;
 
 	void RotatePlatform(float DeltaTime);
 
 	FVector OriginalLocation;
-	FRotator OriginalRotation;
 	
-		
+	//Float Track Signature to handle our update track event
+	FOnTimelineFloat UpdateFunctionFloat;
+
+	//Function which updates our Door's relative location with the timeline graph
+	UFUNCTION()
+	void UpdateTimelineComp(float Output);
+	
 };
