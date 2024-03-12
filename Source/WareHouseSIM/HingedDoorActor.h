@@ -24,9 +24,6 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	UStaticMeshComponent* DoorFrame;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* Door;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
