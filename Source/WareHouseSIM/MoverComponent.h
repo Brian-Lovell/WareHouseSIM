@@ -20,18 +20,6 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	
-	// Swinging Doors
-	void OpenDoor();
-	void CloseDoor();
-	void SetIsDoorOpen(bool bDoorStatus);
-
-	// Variable for Door Curve Asset
-	UPROPERTY(EditAnywhere, Category="Door")
-	UCurveFloat* DoorTimelineFloatCurve;
-
-	UPROPERTY(EditAnywhere, Category="Door")
-	bool bIsDoorOpen = false;
-
 	// Set if actor should move
 	void SetShouldMove(bool bMoveStatus);
 	
@@ -42,10 +30,6 @@ public:
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
-
-	//TimelineComponent to animate Door meshes
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	UTimelineComponent* DoorTimelineComp;
 	
 private:
 	UPROPERTY(EditAnywhere, Category="Movement")
@@ -62,12 +46,4 @@ private:
 	void RotatePlatform(float DeltaTime);
 
 	FVector OriginalLocation;
-	
-	//Float Track Signature to handle our update track event
-	FOnTimelineFloat UpdateFunctionFloat;
-
-	//Function which updates our Door's relative location with the timeline graph
-	UFUNCTION()
-	void UpdateTimelineComp(float Output);
-	
 };
