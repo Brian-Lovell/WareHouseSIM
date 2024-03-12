@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "Components/SceneComponent.h"
 #include "PhysicsEngine/PhysicsHandleComponent.h"
+#include "MoverComponent.h"
+#include "GameFramework/Actor.h"
 #include "InteractComponent.generated.h"
 
 
@@ -30,6 +32,7 @@ public:
 	
 	UFUNCTION(BluePrintCallable)
 	void Release();
+
 	
 private:
 	UPROPERTY(EditAnywhere, Category = Input)

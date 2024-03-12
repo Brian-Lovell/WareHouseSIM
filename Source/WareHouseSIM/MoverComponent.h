@@ -16,16 +16,27 @@ public:
 	// Sets default values for this component's properties
 	UMoverComponent();
 
-protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
-
-public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	// Set if actor should move
-	void SetShouldMove(bool ShouldMove);
+	void SetShouldMove(bool bMoveStatus);
+	
+	// Swinging Doors
+	void OpenDoor();
+	void CloseDoor();
+
+	void SetIsDoorOpen(bool bDoorStatus);
+	
+	UPROPERTY(EditAnywhere, Category="Movement")
+	bool bShouldMove = false;
+
+	UPROPERTY(EditAnywhere, Category="Door")
+	bool bIsDoorOpen = false;
+
+protected:
+	// Called when the game starts
+	virtual void BeginPlay() override;
 	
 private:
 	UPROPERTY(EditAnywhere, Category="Movement")
@@ -42,9 +53,8 @@ private:
 
 	void RotatePlatform(float DeltaTime);
 
-	bool ShouldMove = true;
-
 	FVector OriginalLocation;
+	FRotator OriginalRotation;
 	
 		
 };

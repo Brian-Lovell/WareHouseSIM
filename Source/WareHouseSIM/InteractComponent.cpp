@@ -48,28 +48,46 @@ void UInteractComponent::Interact()
 	bool HasHit = GetInteractionInReach(HitResult);
 	if (HasHit)
 	{
-		// DrawDebugSphere(GetWorld(), HitResult.Location, 10, 100, FColor::Green, false, 5);
-		// DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10, 100, FColor::Green, false, 5);
+		DrawDebugSphere(GetWorld(), HitResult.Location, 10, 100, FColor::Green, false, 5);
+		DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10, 100, FColor::Green, false, 5);
 		UPrimitiveComponent* HitComponent = HitResult.GetComponent();
 		AActor* HitActor = HitResult.GetActor();
-		FName CanMoveTag = "CanMove";
+		FName LiftTag = "LiftObject";
+		FName DoorTag = "DoorObject";
 		
-		if (HitActor->ActorHasTag(CanMoveTag) == false)
+		if (HitActor->ActorHasTag(LiftTag) == true)
 		{
+			UE_LOG(LogTemp, Warning, TEXT("Lift Interaction Case fired"));
+			HitComponent->SetSimulatePhysics(true);
+			HitComponent->WakeAllRigidBodies();
+		
+			HitActor->Tags.Add("Grabbed");
+			HitActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+			PhysicsHandle->GrabComponentAtLocationWithRotation(
+				HitResult.GetComponent(),
+				NAME_None,
+				HitResult.ImpactPoint,
+				GetComponentRotation()
+			);
 			return;
 		}
-		
-		HitComponent->SetSimulatePhysics(true);
-		HitComponent->WakeAllRigidBodies();
-		
-		HitActor->Tags.Add("Grabbed");
-		HitActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-		PhysicsHandle->GrabComponentAtLocationWithRotation(
-			HitResult.GetComponent(),
-			NAME_None,
-			HitResult.ImpactPoint,
-			GetComponentRotation()
-		);
+
+		if (HitActor->ActorHasTag(DoorTag) == true)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("DoorTag detected"));
+			UMoverComponent* MoverComp = HitActor->FindComponentByClass<UMoverComponent>();
+			bool bDoorStatus = MoverComp->bIsDoorOpen;
+			if (bDoorStatus == false)
+			{
+				MoverComp->OpenDoor();
+				UE_LOG(LogTemp, Warning, TEXT("Door Interaction OpenDoor"));
+			}
+			else
+			{
+				MoverComp->CloseDoor();
+				UE_LOG(LogTemp, Warning, TEXT("Door Interaction CloseDoor"));
+			}
+		}
 	}
 }
 
@@ -85,6 +103,7 @@ void UInteractComponent::Release()
 		PhysicsHandle->ReleaseComponent();
 	}
 }
+
 
 UPhysicsHandleComponent* UInteractComponent::GetPhysicsHandle() const
 {

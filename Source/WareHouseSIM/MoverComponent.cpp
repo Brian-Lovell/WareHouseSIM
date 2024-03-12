@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+#include "Math/Rotator.h"
 #include "MoverComponent.h"
 
 // Sets default values for this component's properties
@@ -21,7 +22,6 @@ void UMoverComponent::BeginPlay()
 
 	//Set Original Location so actor can return where it started
 	OriginalLocation = GetOwner()->GetActorLocation();
-	
 }
 
 
@@ -29,11 +29,11 @@ void UMoverComponent::BeginPlay()
 void UMoverComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
+	
 	//When ShouldMove is true the actor will Move
 	FVector TargetLocation = OriginalLocation;
 
-	if (ShouldMove)
+	if (bShouldMove)
 	{
 		TargetLocation = OriginalLocation + MoveOffset;
 		RotatePlatform(DeltaTime);
@@ -45,9 +45,29 @@ void UMoverComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 	GetOwner()->SetActorLocation(NewLocation);
 }
 
-void UMoverComponent::SetShouldMove(bool NewShouldMove)
+void UMoverComponent::SetShouldMove(bool bMoveStatus)
 {
-	ShouldMove = NewShouldMove;
+	bShouldMove = bMoveStatus;
+}
+
+void UMoverComponent::OpenDoor()
+{
+	UE_LOG(LogTemp, Warning, TEXT("OpenDoor fired"));
+	GetOwner()->AddActorLocalRotation(RotationAngle);
+	SetIsDoorOpen(true);
+}
+
+void UMoverComponent::CloseDoor()
+{
+	UE_LOG(LogTemp, Warning, TEXT("CloseDoor fired"));
+	FRotator InverseRotationAngle = RotationAngle.GetInverse();
+	GetOwner()->AddActorLocalRotation(InverseRotationAngle);
+	SetIsDoorOpen(false);
+}
+
+void UMoverComponent::SetIsDoorOpen(bool bDoorStatus)
+{
+	bIsDoorOpen = bDoorStatus;
 }
 
 void UMoverComponent::RotatePlatform(float DeltaTime)
