@@ -34,7 +34,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	//Add Timeline Component to animate door swing.
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Hinged Door")
 	UTimelineComponent* DoorTimelineComp;
 
 private:
