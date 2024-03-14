@@ -103,20 +103,20 @@ void UInteractComponent::Release()
 	}
 }
 
-void UInteractComponent::LiftObject(FHitResult HitResult, AActor* HitActor)
+void UInteractComponent::LiftObject(FHitResult& InHitResult, AActor* InHitActor)
 {
 	UPhysicsHandleComponent *PhysicsHandle = GetPhysicsHandle();
-	UPrimitiveComponent* HitComponent = HitResult.GetComponent();
+	UPrimitiveComponent* HitComponent = InHitResult.GetComponent();
 	
 	HitComponent->SetSimulatePhysics(true);
 	HitComponent->WakeAllRigidBodies();
 		
-	HitActor->Tags.Add("Grabbed");
-	HitActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	InHitActor->Tags.Add("Grabbed");
+	InHitActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 	PhysicsHandle->GrabComponentAtLocationWithRotation(
-		HitResult.GetComponent(),
+		InHitResult.GetComponent(),
 		NAME_None,
-		HitResult.ImpactPoint,
+		InHitResult.ImpactPoint,
 		GetComponentRotation()
 	);
 	return;

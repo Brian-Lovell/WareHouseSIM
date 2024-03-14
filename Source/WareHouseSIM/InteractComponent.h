@@ -34,7 +34,7 @@ public:
 	void Release();
 
 	UFUNCTION(BluePrintCallable)
-	void LiftObject(FHitResult HitResult, AActor* HitActor);
+	void LiftObject(FHitResult& InHitResult, AActor* InHitActor);
 private:
 	UPROPERTY(EditAnywhere, Category = Input)
 	float MaxInteractDistance = 400;
