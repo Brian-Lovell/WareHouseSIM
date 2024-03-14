@@ -2,7 +2,6 @@
 
 
 #include "InteractComponent.h"
-
 #include "HingedDoorComponent.h"
 
 // Sets default values for this component's properties
@@ -15,7 +14,6 @@ UInteractComponent::UInteractComponent()
 	// ...
 }
 
-
 // Called when the game starts
 void UInteractComponent::BeginPlay()
 {
@@ -25,13 +23,12 @@ void UInteractComponent::BeginPlay()
 	
 }
 
-
 // Called every frame
 void UInteractComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
+	//Check if Physics handle component was assigned
 	UPhysicsHandleComponent *PhysicsHandle = GetPhysicsHandle();
 
 	if (PhysicsHandle && PhysicsHandle->GetGrabbedComponent())
@@ -39,53 +36,38 @@ void UInteractComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 		FVector TargetLocation = GetComponentLocation() + GetForwardVector() * InteractHoldDistance;
 		PhysicsHandle->SetTargetLocationAndRotation(TargetLocation, GetComponentRotation());
 	}
-
 }
 
 void UInteractComponent::Interact()
 {
-	// UPhysicsHandleComponent *PhysicsHandle = GetPhysicsHandle();
-
+	//Setup tags for Interaction cases
 	FHitResult HitResult;
+	FName LiftTag = "LiftObject";
+	FName DoorTag = "DoorObject";
+	
+	// Check if linetrace hit something and store in Hitresult
 	bool HasHit = GetInteractionInReach(HitResult);
 	if (HasHit)
 	{
-		// DrawDebugSphere(GetWorld(), HitResult.Location, 10, 100, FColor::Green, false, 5);
-		// DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10, 100, FColor::Green, false, 5);
-		// UPrimitiveComponent* HitComponent = HitResult.GetComponent();
 		AActor* HitActor = HitResult.GetActor();
-		FName LiftTag = "LiftObject";
-		FName DoorTag = "DoorObject";
-		
 		if (HitActor->ActorHasTag(LiftTag) == true)
 		{
-			// HitComponent->SetSimulatePhysics(true);
-			// HitComponent->WakeAllRigidBodies();
-			//
-			// HitActor->Tags.Add("Grabbed");
-			// HitActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-			// PhysicsHandle->GrabComponentAtLocationWithRotation(
-			// 	HitResult.GetComponent(),
-			// 	NAME_None,
-			// 	HitResult.ImpactPoint,
-			// 	GetComponentRotation()
-			// );
-			// return;
 			LiftObject(HitResult, HitActor);
 		}
 
 		if (HitActor->ActorHasTag(DoorTag) == true)
 		{
-			UHingedDoorComponent* DoorComp = HitActor->FindComponentByClass<UHingedDoorComponent>();
-			bool bDoorStatus = DoorComp->bIsDoorOpen;
-			if (bDoorStatus == false)
-			{
-				DoorComp->OpenDoor();
-			}
-			else
-			{
-				DoorComp->CloseDoor();
-			}
+			// UHingedDoorComponent* DoorComp = HitActor->FindComponentByClass<UHingedDoorComponent>();
+			// bool bDoorStatus = DoorComp->bIsDoorOpen;
+			// if (bDoorStatus == false)
+			// {
+			// 	DoorComp->OpenDoor();
+			// }
+			// else
+			// {
+			// 	DoorComp->CloseDoor();
+			// }
+			InteractWithDoor(HitActor);
 		}
 	}
 }
@@ -121,6 +103,20 @@ void UInteractComponent::LiftObject(FHitResult& InHitResult, AActor* InHitActor)
 	);
 	return;
 	
+}
+
+void UInteractComponent::InteractWithDoor(AActor* InHitActor)
+{
+	UHingedDoorComponent* DoorComp = InHitActor->FindComponentByClass<UHingedDoorComponent>();
+	bool bDoorStatus = DoorComp->bIsDoorOpen;
+	if (bDoorStatus == false)
+	{
+		DoorComp->OpenDoor();
+	}
+	else
+	{
+		DoorComp->CloseDoor();
+	}
 }
 
 

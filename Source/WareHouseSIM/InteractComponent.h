@@ -32,9 +32,14 @@ public:
 	
 	UFUNCTION(BluePrintCallable)
 	void Release();
-
+	
+	// Interact Cases
 	UFUNCTION(BluePrintCallable)
 	void LiftObject(FHitResult& InHitResult, AActor* InHitActor);
+
+	UFUNCTION(BluePrintCallable)
+	void InteractWithDoor(AActor* InHitActor);
+	
 private:
 	UPROPERTY(EditAnywhere, Category = Input)
 	float MaxInteractDistance = 400;
