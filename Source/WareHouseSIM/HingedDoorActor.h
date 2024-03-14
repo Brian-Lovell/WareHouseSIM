@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "HingedDoorComponent.h"
+#include "HingedDoorSceneComponent.h"
 #include "GameFramework/Actor.h"
 #include "HingedDoorActor.generated.h"
 
@@ -30,7 +30,7 @@ protected:
 	UStaticMeshComponent* Door;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	UHingedDoorComponent* DoorComponent;
+	UHingedDoorSceneComponent* DoorComponent;
 	
 
 };

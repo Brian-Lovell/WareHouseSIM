@@ -2,7 +2,7 @@
 
 
 #include "InteractComponent.h"
-#include "HingedDoorComponent.h"
+#include "HingedDoorSceneComponent.h"
 
 // Sets default values for this component's properties
 UInteractComponent::UInteractComponent()
@@ -107,7 +107,7 @@ void UInteractComponent::LiftObject(FHitResult& InHitResult, AActor* InHitActor)
 
 void UInteractComponent::InteractWithDoor(AActor* InHitActor)
 {
-	UHingedDoorComponent* DoorComp = InHitActor->FindComponentByClass<UHingedDoorComponent>();
+	UHingedDoorSceneComponent* DoorComp = InHitActor->FindComponentByClass<UHingedDoorSceneComponent>();
 	bool bDoorStatus = DoorComp->bIsDoorOpen;
 	if (bDoorStatus == false)
 	{

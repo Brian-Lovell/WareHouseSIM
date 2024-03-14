@@ -11,10 +11,11 @@ AHingedDoorActor::AHingedDoorActor()
 
 	DoorFrame = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DoorFrameMesh"));
 	Door = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DoorMesh"));
-	DoorComponent = CreateDefaultSubobject<UHingedDoorComponent>(TEXT("Hinged Door Component"));
+	DoorComponent = CreateDefaultSubobject<UHingedDoorSceneComponent>(TEXT("Hinged Door Scene Component"));
 
 	DoorFrame->SetupAttachment(RootComponent);
 	Door->AttachToComponent(DoorFrame, FAttachmentTransformRules::KeepRelativeTransform);
+	DoorComponent->AttachToComponent(Door, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 // Called when the game starts or when spawned
