@@ -9,12 +9,12 @@ AHingedDoorActor::AHingedDoorActor()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	DoorFrame = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DoorFrameMesh"));
+	// DoorFrame = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DoorFrameMesh"));
 	Door = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DoorMesh"));
 	DoorComponent = CreateDefaultSubobject<UHingedDoorSceneComponent>(TEXT("Hinged Door Scene Component"));
 
-	DoorFrame->SetupAttachment(RootComponent);
-	Door->AttachToComponent(DoorFrame, FAttachmentTransformRules::KeepRelativeTransform);
+	Door->SetupAttachment(RootComponent);
+	// Door->AttachToComponent(DoorFrame, FAttachmentTransformRules::KeepRelativeTransform);
 	DoorComponent->AttachToComponent(Door, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
