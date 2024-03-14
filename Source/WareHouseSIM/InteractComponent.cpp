@@ -50,8 +50,8 @@ void UInteractComponent::Interact()
 	bool HasHit = GetInteractionInReach(HitResult);
 	if (HasHit)
 	{
-		DrawDebugSphere(GetWorld(), HitResult.Location, 10, 100, FColor::Green, false, 5);
-		DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10, 100, FColor::Green, false, 5);
+		// DrawDebugSphere(GetWorld(), HitResult.Location, 10, 100, FColor::Green, false, 5);
+		// DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10, 100, FColor::Green, false, 5);
 		UPrimitiveComponent* HitComponent = HitResult.GetComponent();
 		AActor* HitActor = HitResult.GetActor();
 		FName LiftTag = "LiftObject";
