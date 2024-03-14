@@ -44,7 +44,7 @@ void UInteractComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 
 void UInteractComponent::Interact()
 {
-	UPhysicsHandleComponent *PhysicsHandle = GetPhysicsHandle();
+	// UPhysicsHandleComponent *PhysicsHandle = GetPhysicsHandle();
 
 	FHitResult HitResult;
 	bool HasHit = GetInteractionInReach(HitResult);
@@ -52,25 +52,26 @@ void UInteractComponent::Interact()
 	{
 		// DrawDebugSphere(GetWorld(), HitResult.Location, 10, 100, FColor::Green, false, 5);
 		// DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, 10, 100, FColor::Green, false, 5);
-		UPrimitiveComponent* HitComponent = HitResult.GetComponent();
+		// UPrimitiveComponent* HitComponent = HitResult.GetComponent();
 		AActor* HitActor = HitResult.GetActor();
 		FName LiftTag = "LiftObject";
 		FName DoorTag = "DoorObject";
 		
 		if (HitActor->ActorHasTag(LiftTag) == true)
 		{
-			HitComponent->SetSimulatePhysics(true);
-			HitComponent->WakeAllRigidBodies();
-		
-			HitActor->Tags.Add("Grabbed");
-			HitActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-			PhysicsHandle->GrabComponentAtLocationWithRotation(
-				HitResult.GetComponent(),
-				NAME_None,
-				HitResult.ImpactPoint,
-				GetComponentRotation()
-			);
-			return;
+			// HitComponent->SetSimulatePhysics(true);
+			// HitComponent->WakeAllRigidBodies();
+			//
+			// HitActor->Tags.Add("Grabbed");
+			// HitActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+			// PhysicsHandle->GrabComponentAtLocationWithRotation(
+			// 	HitResult.GetComponent(),
+			// 	NAME_None,
+			// 	HitResult.ImpactPoint,
+			// 	GetComponentRotation()
+			// );
+			// return;
+			LiftObject(HitResult, HitActor);
 		}
 
 		if (HitActor->ActorHasTag(DoorTag) == true)
@@ -100,6 +101,26 @@ void UInteractComponent::Release()
 		PhysicsHandle->GetGrabbedComponent()->WakeAllRigidBodies(); 
 		PhysicsHandle->ReleaseComponent();
 	}
+}
+
+void UInteractComponent::LiftObject(FHitResult HitResult, AActor* HitActor)
+{
+	UPhysicsHandleComponent *PhysicsHandle = GetPhysicsHandle();
+	UPrimitiveComponent* HitComponent = HitResult.GetComponent();
+	
+	HitComponent->SetSimulatePhysics(true);
+	HitComponent->WakeAllRigidBodies();
+		
+	HitActor->Tags.Add("Grabbed");
+	HitActor->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	PhysicsHandle->GrabComponentAtLocationWithRotation(
+		HitResult.GetComponent(),
+		NAME_None,
+		HitResult.ImpactPoint,
+		GetComponentRotation()
+	);
+	return;
+	
 }
 
 
