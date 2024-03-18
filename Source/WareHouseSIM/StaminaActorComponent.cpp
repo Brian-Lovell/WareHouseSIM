@@ -19,7 +19,8 @@ void UStaminaActorComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
+	//Set Stamina
+	CurrentStamina = MaxStamina;
 	
 }
 

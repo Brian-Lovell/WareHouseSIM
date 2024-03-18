@@ -16,13 +16,23 @@ public:
 	// Sets default values for this component's properties
 	UStaminaActorComponent();
 
+	// Called every frame
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+private:
+	UPROPERTY(EditAnywhere, Category="Stamina")
+	float MaxStamina = 100.f;
 
-		
+	UPROPERTY(EditAnywhere, Category="Stamina")
+	float CurrentStamina;
+	
+	UPROPERTY(EditAnywhere, Category="Stamina")
+	float RechargeRate = 1.f;
+	
+	UPROPERTY(EditAnywhere, Category="Stamina")
+	float BurnRate = 1.f;
 };
