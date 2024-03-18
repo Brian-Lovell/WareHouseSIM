@@ -32,9 +32,10 @@ void UHingedDoorSceneComponent::BeginPlay()
 
 void UHingedDoorSceneComponent::UpdateTimelineComp(float Output)
 {
+	UStaticMeshComponent* DoorMesh = GetOwner()->FindComponentByClass<UStaticMeshComponent>();
 	// Create and set our Door's new relative location based on the output from our Timeline Curve
 	FRotator DoorNewRotation = FRotator(0.0f, Output, 0.f);
-	GetOwner()->SetActorRelativeRotation(DoorNewRotation);
+	DoorMesh->SetRelativeRotation(DoorNewRotation);
 }
 
 
