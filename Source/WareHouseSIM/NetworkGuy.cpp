@@ -6,6 +6,7 @@
 #include "Components/InputComponent.h"
 #include "EnhancedInputComponent.h"
 #include "InputActionValue.h"
+#include "StaminaActorComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Engine/World.h"
@@ -53,6 +54,8 @@ void ANetworkGuy::BeginPlay()
 			Subsystem->AddMappingContext(NetworkGuyMappingContext, 0);
 		}
 	}
+
+	
 	
 	
 }
@@ -97,7 +100,7 @@ void ANetworkGuy::StandUp()
 
 void ANetworkGuy::Sprint(const FInputActionInstance& Instance)
 {
-	UE_LOG(LogTemp, Display, TEXT("I'm sprinting!"));
+	UStaminaActorComponent* StaminaComponent = GetOwner()->FindComponentByClass<UStaminaActorComponent>();
 	bool bSprinting = Instance.GetValue().Get<bool>();
 	if (bSprinting)
 	{
