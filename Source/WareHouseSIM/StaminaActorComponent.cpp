@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
+#include "TimerManager.h"
+#include "GameFramework/Actor.h"
 #include "StaminaActorComponent.h"
 
 // Sets default values for this component's properties
@@ -11,6 +12,7 @@ UStaminaActorComponent::UStaminaActorComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	// ...
+	CurrentStamina = MaxStamina;
 }
 
 
@@ -18,10 +20,14 @@ UStaminaActorComponent::UStaminaActorComponent()
 void UStaminaActorComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	//Set Stamina
-	CurrentStamina = MaxStamina;
 	
+	
+	
+}
+
+void UStaminaActorComponent::ConsumeStamina()
+{
+	CurrentStamina = CurrentStamina - BurnRate;
 }
 
 
@@ -31,5 +37,24 @@ void UStaminaActorComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// ...
+	// while (CurrentStamina <= MaxStamina)
+	// {
+	// 	CurrentStamina = CurrentStamina + RechargeRate;
+	// }
+}
+
+void UStaminaActorComponent::Sprinting()
+{
+	if (CurrentStamina >= 0.f)
+	{
+		GetOwner()->GetWorldTimerManager().SetTimer(RateTimer, this, &UStaminaActorComponent::ConsumeStamina, RateDelay, true, -1);
+		// CurrentStamina = CurrentStamina - BurnRate;
+	}
+	UE_LOG(LogTemp, Warning, TEXT("Sprinting! Current Stamina: %f "), CurrentStamina);
+}
+
+float UStaminaActorComponent::GetCurrentStamina()
+{
+	return CurrentStamina / MaxStamina;
 }
 

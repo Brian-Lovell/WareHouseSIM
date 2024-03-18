@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "TimerManager.h"
 #include "StaminaActorComponent.generated.h"
 
 
@@ -18,6 +19,13 @@ public:
 
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	UFUNCTION(BluePrintCallable)
+	void Sprinting();
+
+	UFUNCTION(BluePrintCallable)
+	float GetCurrentStamina();
+
 
 protected:
 	// Called when the game starts
@@ -35,4 +43,11 @@ private:
 	
 	UPROPERTY(EditAnywhere, Category="Stamina")
 	float BurnRate = 1.f;
+
+	UPROPERTY(EditAnywhere, Category="Stamina")
+	float RateDelay = 1.f;
+
+	void ConsumeStamina();
+
+	FTimerHandle RateTimer;
 };
