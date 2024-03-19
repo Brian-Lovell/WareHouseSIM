@@ -23,9 +23,15 @@ public:
 	// Sets default values for this character's properties
 	ANetworkGuy();
 
+	// Climbing Functions
 	void StartClimbing();
 	void StopClimbing();
 	void SetIsClimbing(bool bIsClimbing);
+	
+	// Sprinting functions
+	void StartSprinting();
+	void StopSprinting();
+	void SetIsSprinting(bool bIsSprinting);
 
 protected:
 	// Called when the game starts or when spawned
@@ -74,5 +80,14 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
 private:
+	UPROPERTY()
+	class UStaminaActorComponent* StaminaComp;
+	
 	bool bIsClimbing = false;
+
+	bool bIsSprinting = false;
+
+	
+
+	
 };

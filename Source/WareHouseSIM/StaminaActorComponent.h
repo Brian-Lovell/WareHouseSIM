@@ -26,6 +26,12 @@ public:
 	UFUNCTION(BluePrintCallable)
 	float GetCurrentStamina();
 
+	void SetHasStamina(bool bHasStamina);
+
+	bool CheckHasStamina();
+
+	bool bHasStamina = false;
+
 
 protected:
 	// Called when the game starts
@@ -46,6 +52,7 @@ private:
 
 	UPROPERTY(EditAnywhere, Category="Stamina")
 	float RateDelay = 1.f;
+	
 
 	void ConsumeStamina();
 

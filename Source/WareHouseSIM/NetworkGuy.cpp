@@ -19,6 +19,9 @@ ANetworkGuy::ANetworkGuy()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	StaminaComp = CreateDefaultSubobject<UStaminaActorComponent>(TEXT("Stamina Component"));
+	
+
 }
 
 void ANetworkGuy::StartClimbing()
@@ -35,10 +38,43 @@ void ANetworkGuy::StopClimbing()
 	Movement->SetMovementMode(MOVE_Walking);
 }
 
-void ANetworkGuy::SetIsClimbing(bool NewIsClimbing)
+void ANetworkGuy::SetIsClimbing(bool bNewIsClimbing)
 {
-	bIsClimbing = NewIsClimbing;
+	bIsClimbing = bNewIsClimbing;
 }
+
+void ANetworkGuy::StartSprinting()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Start Sprinting has fired"));
+	// Check if there is stamina
+	// UStaminaActorComponent* StaminaComp = GetOwner()->FindComponentByClass<UStaminaActorComponent>();
+	if (StaminaComp != nullptr)
+	{
+		if (StaminaComp->bHasStamina)
+		{
+			// Increase player speed
+			GetCharacterMovement()->MaxWalkSpeed = DefaultSpeed * SprintModifier;
+			// set bool is sprinting
+			SetIsSprinting(true);
+		}
+	}
+}
+
+void ANetworkGuy::StopSprinting()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Stop Sprinting has fired"));
+	// set bool to not sprinting
+	SetIsSprinting(false);
+	// set player speed back to default
+	GetCharacterMovement()->MaxWalkSpeed = DefaultSpeed;
+}
+
+void ANetworkGuy::SetIsSprinting(bool bNewIsSprinting)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Set is Sprinting has fired"));
+	bIsSprinting = bNewIsSprinting;
+}
+
 
 // Called when the game starts or when spawned
 void ANetworkGuy::BeginPlay()
@@ -140,8 +176,8 @@ void ANetworkGuy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ANetworkGuy::CustomJump);
 		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Triggered, this, &ANetworkGuy::CrouchDown);
 		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Completed, this, &ANetworkGuy::StandUp);
-		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Triggered, this, &ANetworkGuy::Sprint);
-		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &ANetworkGuy::Sprint);
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Triggered, this, &ANetworkGuy::StartSprinting);
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Completed, this, &ANetworkGuy::StopSprinting);
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &ANetworkGuy::Interact);
 	}
 }

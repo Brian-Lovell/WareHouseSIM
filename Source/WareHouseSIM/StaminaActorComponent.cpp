@@ -1,8 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+
+#include "StaminaActorComponent.h"
 #include "TimerManager.h"
 #include "GameFramework/Actor.h"
-#include "StaminaActorComponent.h"
 
 // Sets default values for this component's properties
 UStaminaActorComponent::UStaminaActorComponent()
@@ -21,8 +22,18 @@ void UStaminaActorComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	
-	
+}
+
+// Called every frame
+void UStaminaActorComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	SetHasStamina(CheckHasStamina());
+	UE_LOG(LogTemp, Warning, TEXT("Current Stamina: %f") ,CurrentStamina);
+	UE_LOG(LogTemp, Warning, TEXT("Has Stamina: %s") , bHasStamina ? TEXT("true") : TEXT("fasle"));
+
+
 }
 
 void UStaminaActorComponent::ConsumeStamina()
@@ -31,17 +42,7 @@ void UStaminaActorComponent::ConsumeStamina()
 }
 
 
-// Called every frame
-void UStaminaActorComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
-	// while (CurrentStamina <= MaxStamina)
-	// {
-	// 	CurrentStamina = CurrentStamina + RechargeRate;
-	// }
-}
 
 void UStaminaActorComponent::Sprinting()
 {
@@ -56,5 +57,21 @@ void UStaminaActorComponent::Sprinting()
 float UStaminaActorComponent::GetCurrentStamina()
 {
 	return CurrentStamina / MaxStamina;
+}
+
+void UStaminaActorComponent::SetHasStamina(bool bNewHasStamina)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Set Has Stamina fired"));
+	bHasStamina = bNewHasStamina;
+}
+
+bool UStaminaActorComponent::CheckHasStamina()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Check Has Stamina fired"));
+	if (CurrentStamina >= 0.f)
+	{
+		return true;
+	}
+	return false;
 }
 
